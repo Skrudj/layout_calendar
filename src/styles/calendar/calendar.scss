@@ -1,0 +1,52 @@
+$max-width: ($cell-size + $border-width) * $table-width;
+
+.calendar {
+  display: flex;
+  justify-content: start;
+  flex-wrap: wrap;
+  max-width: #{$max-width};
+  gap: 1px;
+  padding-top: 21px;
+  margin: 0 auto;
+
+  &__cell {
+    display: flex;
+    box-sizing: border-box;
+    width: #{$cell-size};
+    height: #{$cell-size};
+    background-color: #eee;
+    border: $border-width solid #000;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+
+    &:hover {
+      background-color: pink;
+      transform: translateY(-20px);
+      cursor: pointer;
+    }
+  }
+
+  @for $day from 1 through 31 {
+    :nth-child(#{$day})::before {
+      content: "#{$day}";
+      font-size: 30px;
+    }
+  }
+
+  @each $days, $col in $days {
+    &--start-day-#{$days} {
+      .calendar__cell:first-child {
+        margin-left: ($cell-size * $col) + $col * $border-width;
+      }
+    }
+  }
+
+  @each $non-visible in 28, 29, 30, 31 {
+    &--month-length-#{$non-visible} {
+      .calendar__cell:nth-child(#{$non-visible + 1}) {
+        display: none;
+      }
+    }
+  }
+}
